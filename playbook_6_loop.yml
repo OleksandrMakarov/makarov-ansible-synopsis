@@ -1,0 +1,33 @@
+---
+- name: Loops Playbook
+  hosts: ansible_1
+  become: yes
+
+  tasks:
+  - name: Say Hello to everyone
+    debug: msg="Hello {{ item }}!"
+    loop: 
+      - "Oleksandr"
+      - "Olha"
+      - "User_1"
+      - "User_2"
+  
+  - name: Loop Until for example
+    shell: echo -n U >> my_file.txt && cat my_file.txt
+    register: output
+    delay: 5
+    retries: 10       # Default execute 3 times
+    until: output.stdout.find("UUUU") == false
+
+  - name: Print final output
+    debug:
+      var: output.stdout
+
+  - name: Install many packages
+    apt: name={{ item }} state=latest
+    loop:
+      - python3
+      - mc
+      - apache2
+      - tree
+      - mysql-client

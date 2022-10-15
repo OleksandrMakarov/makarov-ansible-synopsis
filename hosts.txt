@@ -1,0 +1,20 @@
+[test_servers]
+ansible-5    ansible_host=192.168.1.45    owner=CentOS_7
+
+[staging_servers]
+ansible_1    ansible_host=192.168.1.41    owner=oleksandr
+ansible_2    ansible_host=192.168.1.42    owner=olha
+
+[prod_servers]
+ansible-3    ansible_host=192.168.1.43    owner=linux_1
+ansible-4    ansible_host=192.168.1.44    owner=linux_2
+
+[staging_all:children]
+staging_servers
+
+[prod_all:children]
+prod_servers
+
+[ubuntu_all:children]
+staging_servers
+prod_servers

@@ -1,0 +1,61 @@
+---
+- name: Playbook "delegate"
+  hosts: all
+  become: yes
+
+  vars:
+    my_text: "Hello World!"
+  
+  tasks:
+  - name: Ping test
+    ping:
+
+  - name: Unregister Server from Load Balancer
+    shell: "echo This server {{ inventory_hostname }} was 
+            unregistered from our Load Balancer, 
+            node name is {{ ansible_nodename }} >> /home/log.txt"
+    delegate_to: 127.0.0.1
+
+  - name: Create folder_1
+    file:
+      path: /home/secret
+      state: directory
+      mode: 0755
+      owner: oleksandr
+  
+  
+  - name: Create file_1
+    copy:
+      dest: /home/secret/file_1.txt
+      content: |
+        Text Line_1, in file_1
+        Text Line_2, in file_1
+        Text Line_3, {{ my_text }}
+      mode: 0755
+      owner: oleksandr
+    delegate_to: ansible_1
+  #   register: copy_output
+  # - debug: var=copy_output
+
+  - name: Create file_2
+    copy:
+      dest: /home/secret/file_2.txt
+      content: |
+        Text Line_1, in file_2
+        Text Line_2, in file_2
+        Text Line_3, {{ my_text }}
+      mode: 0755
+      owner: oleksandr
+
+  - name: Reboot my servers
+    shell: sleep 3 && reboot now
+    async: 1
+    poll: 0
+
+  - name: Wait until servers get started
+    wait_for:
+      host: "{{ inventory_hostname }}"
+      state: started
+      delay: 5
+      timeout: 60
+    delegate_to: 127.0.0.1

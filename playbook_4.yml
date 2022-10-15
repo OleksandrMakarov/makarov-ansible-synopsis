@@ -1,0 +1,35 @@
+---
+- name: My Playbook for variables lesson
+  hosts: all
+  become: yes
+
+  vars:
+    message_1: Hello
+    message_2: World
+    secret   : any_secret
+
+  tasks:
+  - name: Print secret variable
+    debug:
+      var: secret
+
+  - debug:
+      msg: "Password is: {{ secret }}"
+
+  - debug:
+      msg: "Owner of server is: {{ owner }}"
+
+  - set_fact: full_message="{{ message_1 }} {{message_2}} from {{ owner }}"
+
+  - debug:
+      var: full_message
+
+  - debug:
+      var: ansible_distribution
+
+  - shell: uptime
+    register: results
+
+  - debug:
+      var: results
+   

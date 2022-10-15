@@ -1,0 +1,4 @@
+---
+# defaults file for deploy_apache_web
+
+destination_folder: /var/www/html
