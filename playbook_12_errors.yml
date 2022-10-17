@@ -1,0 +1,25 @@
+---
+- name: Ansible error handling
+  hosts: all
+  any_errors_fatal: true
+  become: yes
+
+  tasks:
+  - name: Task_1
+    apt: name=treeee  state=latest
+    ignore_errors: yes
+    register: results_output
+  - debug: var=results_output.msg
+
+  - name: Task_2
+    shell: echo Hello World!
+    register: results_output
+    failed_when: "'World' in results_output.stdout"
+  - debug: var=results_output.stdout
+
+
+  - name: Task_3
+    shell: echo Hello_Oleksandr!
+    register: results_output
+  - debug: var=results_output.stdout
+      

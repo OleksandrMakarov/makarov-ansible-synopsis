@@ -436,10 +436,41 @@ If we need to wait when servers will be restarted, will use next module:
       timeout: 60
     delegate_to: 127.0.0.1
 ```
-# Part 11 - Error Handling ()
+# Part 11 - Error Handling (playbook_12_errors.yml)
+If a job on the node fails, all other jobs on that node will stop. On all other nodes, tasks will continue to run.  
+To skip failed task and continue next tasks on failed server, use module ***ignore_errors:***.  
 
+Also use ***register:*** and ***debug:*** to control outputs.
+```
+  tasks:
+  - name: Task_1
+    apt: name=treeee  state=latest
+    ignore_errors: yes
+    register: results_output
+  - debug: var=results_output.msg
 
+  - name: Task_2
+    shell: echo Hello_World!
+    register: results_output
+  - debug: var=results_output.stdout
+```
+To stop task when something went wrong, use module ***failed_when:***
+```
+  - name: Task_2
+    shell: echo Hello World!
+    register: results_output
+    failed_when: "'World' in results_output.stdout"
+  - debug: var=results_output.stdout
+```
+To halt tasks on other servers when task on one server was failed, add module ***any_errors_fatal: true***
+```
+- name: Ansible error handling
+  hosts: all
+  any_errors_fatal: true
+  become: yes
+```
 
+# Part 12 - Ansible-Vault ()
 
 
 
