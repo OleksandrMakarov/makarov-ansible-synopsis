@@ -358,12 +358,12 @@ Use parameters:
 ***-- extra-vars***  
 Example:  
 ```
-ansible-playbook playbook_9.yml -e "my_hosts=test_servers"
+$ ansible-playbook playbook_9.yml -e "my_hosts=test_servers"
 ```
 If variable exist in some file but in extra-vars uses another value of variable, will be used value from extra-vars.
 ```
-ansible-playbook playbook_9.yml -e "my_hosts=test_servers owner='New owner'"
-ansible-playbook playbook_9.yml -extra-vars "my_hosts=test_servers owner=\"New owner\""
+$ ansible-playbook playbook_9.yml -e "my_hosts=test_servers owner='New owner'"
+$ ansible-playbook playbook_9.yml -extra-vars "my_hosts=test_servers owner=\"New owner\""
 ```
 
 # Part 9 - Import, Include (playbook_10_includes.yml, create_files.yml, create_folders.yml)
@@ -471,6 +471,35 @@ To halt tasks on other servers when task on one server was failed, add module **
 ```
 
 # Part 12 - Ansible-Vault ()
+Ansible Vault is a feature that allows users to encrypt values and data structures within Ansible projects.  
+This provides the ability to secure any sensitive data that is necessary to successfully run Ansible plays but should not be publicly visible, like passwords or private keys.  
+Ansible automatically decrypts vault-encrypted content at runtime when the key is provided.  
+   
+To create secret file, use command:
+
+```
+$ ansible-vault create my_secrets.txt        # to create file
+$ ansible-vault view my_secrets.txt          # to view file
+$ ansible-vault edit my_secrets.txt          # to edit file
+$ ansible-vault rekey my_secrets.txt         # to edit file
+$ ansible-vault decrypt my_secrets.txt       # to decrypt file
+```
+To encrypt existed file, use:
+```
+$ ansible-vault encrypt playbook_13_vault.yml
+```
+To run encrypted playbook, use command:  
+```
+$ ansible-playbook playbook_13_vault.yml --ask-vault-pass
+$ ansible-playbook playbook_13_vault.yml --vault-password-file passwd.txt # to use file with password
+```
+Ansible allows to create and use encrypted variables:  
+```
+$ ansible-vault encrypt_string
+$ ansible-vault encrypt_string --stdin-name "my_password"
+```
+If you use encrypted variables, you need to run playbook with asking password.  
+If you use several encrypted variables, use mutual password for all variables!
 
 
 
