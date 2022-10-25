@@ -470,7 +470,7 @@ To halt tasks on other servers when task on one server was failed, add module **
   become: yes
 ```
 
-# Part 12 - Ansible-Vault ()
+# Part 12 - Ansible-Vault (playbook_13_vault.yml)
 Ansible Vault is a feature that allows users to encrypt values and data structures within Ansible projects.  
 This provides the ability to secure any sensitive data that is necessary to successfully run Ansible plays but should not be publicly visible, like passwords or private keys.  
 Ansible automatically decrypts vault-encrypted content at runtime when the key is provided.  
@@ -500,12 +500,6 @@ $ ansible-vault encrypt_string --stdin-name "my_password"
 ```
 If you use encrypted variables, you need to run playbook with asking password.  
 If you use several encrypted variables, use mutual password for all variables!
-
-
-
-
-
-
 
 # Remarks
 If you use CentOS or something with python 2, will use next tips:
